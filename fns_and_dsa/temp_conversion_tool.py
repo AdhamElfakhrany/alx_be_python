@@ -1,67 +1,34 @@
-import ast
-import os
+# -------- Global Conversion Factors --------
+FAHRENHEIT_TO_CELSIUS = lambda f: (f - 32) * 5 / 9
+CELSIUS_TO_FAHRENHEIT = lambda c: (c * 9 / 5) + 32
 
-REQUIREMENTS = [
-    "File exists and is not empty",
-    "Definition of global conversion factors",
-    "Implementation of conversion functions",
-    "User interaction",
-    "Implementation of ValueError"
-]
+# -------- Conversion Functions --------
+def convert_to_celsius(f):
+    return FAHRENHEIT_TO_CELSIUS(f)
 
-def check_file_exists_and_not_empty(filepath):
-    return os.path.isfile(filepath) and os.path.getsize(filepath) > 0
+def convert_to_fahrenheit(c):
+    return CELSIUS_TO_FAHRENHEIT(c)
 
-def check_global_conversion_factors(tree):
-    factors = {"FAHRENHEIT_TO_CELSIUS", "CELSIUS_TO_FAHRENHEIT"}
-    found = set()
-    for node in tree.body:
-        if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id in factors:
-                    found.add(target.id)
-    return factors == found
-
-def check_conversion_functions(tree):
-    functions = {"convert_to_celsius", "convert_to_fahrenheit"}
-    found = set()
-    for node in tree.body:
-        if isinstance(node, ast.FunctionDef) and node.name in functions:
-            found.add(node.name)
-    return functions == found
-
-def check_user_interaction(tree):
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-            if node.func.id == "input":
-                return True
-    return False
-
-def check_value_error(tree):
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ExceptHandler):
-            if getattr(node.type, 'id', None) == "ValueError":
-                return True
-    return False
-
-def review_code(filepath):
-    results = {}
-    results[REQUIREMENTS[0]] = check_file_exists_and_not_empty(filepath)
-    if not results[REQUIREMENTS[0]]:
-        return results
-
-    with open(filepath, "r", encoding="utf-8") as f:
-        source = f.read()
-    tree = ast.parse(source)
-
-    results[REQUIREMENTS[1]] = check_global_conversion_factors(tree)
-    results[REQUIREMENTS[2]] = check_conversion_functions(tree)
-    results[REQUIREMENTS[3]] = check_user_interaction(tree)
-    results[REQUIREMENTS[4]] = check_value_error(tree)
-    return results
+# -------- Main User Interaction --------
+def main():
+    print("Temperature Conversion Tool")
+    print("1. Celsius to Fahrenheit")
+    print("2. Fahrenheit to Celsius")
+    
+    try:
+        choice = int(input("Enter choice (1 or 2): "))
+        if choice == 1:
+            c = float(input("Enter temperature in Celsius: "))
+            f = convert_to_fahrenheit(c)
+            print(f"{c}°C = {f:.2f}°F")
+        elif choice == 2:
+            f = float(input("Enter temperature in Fahrenheit: "))
+            c = convert_to_celsius(f)
+            print(f"{f}°F = {c:.2f}°C")
+        else:
+            print("Invalid choice.")
+    except ValueError:
+        print("Please enter valid numeric input.")
 
 if __name__ == "__main__":
-    filepath = "shop.py"
-    review = review_code(filepath)
-    for req, passed in review.items():
-        print(f"{req}: {'✅' if passed else '❌'}")
+    main()
