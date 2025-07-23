@@ -1,44 +1,33 @@
 def display_menu():
-    print("\nShopping List Manager")
-    print("1. Add Item")
-    print("2. Remove Item")
-    print("3. View List")
-    print("4. Exit")
+    print("\nShopping List Menu:")
+    print("1. Add item")
+    print("2. View list")
+    print("3. Exit")
+
+shopping_list = []
 
 def main():
-    shopping_list = []
     while True:
         display_menu()
-        choice_input = input("Enter your choice (1-4): ").strip()
-
-        if not choice_input.isdigit():
-            print("Invalid input. Please enter a number.")
+        try:
+            choice = int(input("Enter your choice (1-3): "))  # Convert input to int ✅
+        except ValueError:
+            print("Please enter a valid number!")
             continue
 
-        choice = int(choice_input)
-
         if choice == 1:
-            item = input("Enter item to add: ").strip()
+            item = input("Enter item to add: ")
             shopping_list.append(item)
+            print(f"{item} added to the list.")
         elif choice == 2:
-            item = input("Enter item to remove: ").strip()
-            if item in shopping_list:
-                shopping_list.remove(item)
-                print(f"{item} removed.")
-            else:
-                print("Item not found.")
-        elif choice == 3:
             print("\nYour Shopping List:")
-            if shopping_list:
-                for i, item in enumerate(shopping_list, start=1):
-                    print(f"{i}. {item}")
-            else:
-                print("The shopping list is empty.")
-        elif choice == 4:
-            print("Goodbye!")
+            for i, item in enumerate(shopping_list, 1):
+                print(f"{i}. {item}")
+        elif choice == 3:
+            print("Exiting...")
             break
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print("Invalid choice. Try again.")
 
 if __name__ == "__main__":
     main()
