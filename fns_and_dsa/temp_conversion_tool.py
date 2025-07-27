@@ -1,34 +1,24 @@
-# -------- Global Conversion Factors --------
-FAHRENHEIT_TO_CELSIUS = lambda f: (f - 32) * 5 / 9
-CELSIUS_TO_FAHRENHEIT = lambda c: (c * 9 / 5) + 32
+# Conversion factors
+FAHRENHEIT_TO_CELSIUS_FACTOR = 5/9
+CELSIUS_TO_FAHRENHEIT_FACTOR = 9/5
 
-# -------- Conversion Functions --------
-def convert_to_celsius(f):
-    return FAHRENHEIT_TO_CELSIUS(f)
+def convert_to_celsius(fahrenheit):
+    return (fahrenheit-32)*FAHRENHEIT_TO_CELSIUS_FACTOR
 
-def convert_to_fahrenheit(c):
-    return CELSIUS_TO_FAHRENHEIT(c)
+def convert_to_fahrenheit(celsius):
+    return (celsius*CELSIUS_TO_FAHRENHEIT_FACTOR)+32
 
-# -------- Main User Interaction --------
-def main():
-    print("Temperature Conversion Tool")
-    print("1. Celsius to Fahrenheit")
-    print("2. Fahrenheit to Celsius")
-    
-    try:
-        choice = int(input("Enter choice (1 or 2): "))
-        if choice == 1:
-            c = float(input("Enter temperature in Celsius: "))
-            f = convert_to_fahrenheit(c)
-            print(f"{c}°C = {f:.2f}°F")
-        elif choice == 2:
-            f = float(input("Enter temperature in Fahrenheit: "))
-            c = convert_to_celsius(f)
-            print(f"{f}°F = {c:.2f}°C")
-        else:
-            print("Invalid choice.")
-    except ValueError:
-        print("Please enter valid numeric input.")
+try:
+    temperature = float(input("Enter the temperature to convert: "))
+except:
+    print("Invalid temperature. Please enter a numeric value.")
+    exit()
 
-if __name__ == "__main__":
-    main()
+case = input("Is this temperature in Celsius or Fahrenheit? (C/F): ").lower()
+
+if case == 'f':
+    print(f"{temperature}°F is {convert_to_celsius(temperature)}°C")
+elif case == 'c':
+    print(f"{temperature}°C is {convert_to_fahrenheit(temperature)}°F")
+else:
+    print("Invalid unit.")
